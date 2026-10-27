@@ -123,8 +123,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 11874,
-      "sha256": "901a164042887497282934160741607928d5d6ca5e55a4eb9a65f9ed00ab42ef"
+      "bytes": 11853,
+      "sha256": "cf431771418e137c1107cba9d2349fbf647e550a4fcfa9455f99ba27b78a7b77"
     },
     {
       "path": "scripts/backfill-industry.ts",
