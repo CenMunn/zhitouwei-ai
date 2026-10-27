@@ -1,0 +1,21 @@
+{
+  "name": "智投委AI",
+  "packagedAt": "2026-10-27",
+  "applicationVersion": "DeepSeekFlash-DecisionNewsFix-20261018",
+  "configuredModel": "deepseek-flash",
+  "changes": [
+    "补齐公开源码运行说明",
+    "空库初始化导入公开股票身份目录",
+    "整理可分发的源码、测试和模型资源"
+  ],
+  "validation": {
+    "regressionTests": 552,
+    "passed": 552,
+    "failed": 0,
+    "productionBuild": "passed",
+    "applicationTypecheck": "passed",
+    "isolatedDatabaseInit": "passed",
+    "stockIdentities": 9840
+  },
+  "scope": "源码归档与安装整理，未执行新一轮模型准确率评测"
+}

@@ -1,0 +1,15 @@
+node_modules/
+.next*/
+.env
+.env.*
+!.env.example
+.local/
+db/*.db
+db/*.db-*
+db/*.sqlite*
+db/filing-documents/
+*.log
+*.tsbuildinfo
+__pycache__/
+*.pyc
+

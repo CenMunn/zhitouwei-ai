@@ -1,0 +1,12 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {financialLayoutRows} from '../src/lib/filings/layout.ts';import {extractFacts} from '../src/lib/filings/core.ts';
+const item=(str,x,y,width=25)=>({str,transform:[1,0,0,1,x,y],width});
+test('a year split into year and 年度 items still anchors the amounts',()=>{
+  const items=[item('2025',300,700),item('年度',330,700),item('2024',400,700),item('年度',430,700)];
+  for(let r=0;r<3;r++)items.push(item('资产项目'+String.fromCharCode(65+r),20,650-r*20,100),item('120',350,650-r*20),item('100',450,650-r*20));
+  assert.equal(financialLayoutRows(items,2).length,3);
+});
+test('physical amount columns exclude notes and reject unfilled cells',()=>{const items=[];for(let c=0;c<4;c++)items.push(item(c%2?'2024年':'2025年',300+c*100,700));for(let r=0;r<4;r++){const y=650-r*20;items.push(item('参考项目'+String.fromCharCode(65+r),40,y,100),item('12',210,y,10));for(let c=0;c<4;c++)items.push(item('100',320+c*100,y));}items.push(item('资产总计',40,500,100),item('12',210,500,10),item('100',320,500),item('90',420,500),item('80',520,500));const rows=financialLayoutRows(items,4);assert.equal(rows.some(r=>r.text.includes('资产总计')),false);assert.equal(rows.length,4);const text='合并及银行资产负债表\n人民币百万元\n附注 本集团 本银行\n2025年 2024年 2025年 2024年\n资产总计 |12 |100 |90 |80 |';assert.equal(extractFacts([{page:1,text}], 'a'.repeat(64)).length,0);assert.equal(extractFacts([{page:1,text,layoutRows:rows}], 'a'.repeat(64)).length,16);});
+
+test('each year column has its own geometric anchor; notes never fill a globally missing column',()=>{for(const missing of [0,1,2]){const items=[];for(let c=0;c<4;c++)items.push(item(c%2?'2024年':'2025年',300+c*100,700));for(let r=0;r<4;r++){const y=650-r*20;items.push(item('资产项目'+String.fromCharCode(65+r),40,y,100),item('12',290,y,10));for(let c=0;c<4;c++)if(c!==missing)items.push(item(String(100+c),320+c*100,y));}assert.deepEqual(financialLayoutRows(items,4),[]);}});
+test('a nearby note cannot replace one missing cell of an otherwise anchored amount column',()=>{const items=[];for(let c=0;c<4;c++)items.push(item(c%2?'2024年':'2025年',300+c*100,700));for(let r=0;r<4;r++){const y=650-r*20;items.push(item('资产项目'+String.fromCharCode(65+r),40,y,100));for(let c=0;c<4;c++)items.push(item('100',320+c*100,y));}items.push(item('缺失项目',40,500,100),item('12',320,500,10));for(let c=1;c<4;c++)items.push(item('100',320+c*100,500));assert.equal(financialLayoutRows(items,4).some(r=>r.text.includes('缺失项目')),false);});
