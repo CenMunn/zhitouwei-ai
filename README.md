@@ -176,7 +176,7 @@ pnpm run typecheck:app
 
 ## 团队与联系
 
-davidzhu1026@163.com
-2924206466@qq.com
+-davidzhu1026@163.com
+-2924206466@qq.com
 
 代码沿用本仓库的 MIT License。第三方库、模型接口、行情及新闻内容的使用仍分别遵循其提供方的条款。
